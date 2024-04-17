@@ -10,7 +10,7 @@ package com.mycompany.inventoryproductproject;
  */
 public class Item {
     private String name; // Nombre del producto
-    private int lot; // lot del producto
+    private int lot; // cantidad de productos
     private double price; // Precio del producto
     
 
@@ -20,43 +20,38 @@ public class Item {
 
     // Constructor con parámetros
     public Item(String name, int lot, double price) {
-        this.name = name; // Asigna el nombre del producto
-        this.lot = lot; // Asigna el stock del producto
-        this.price = price; // Asigna el precio del producto
+        this.name = name; 
+        this.lot = lot; 
+        this.price = price; 
         
     }
 
-    // Método para obtener el nombre del producto
+    // Get y setters
     public String getName() {
-        return name; // Devuelve el nombre del producto
+        return name; 
     }
 
-    // Método para establecer el nombre del producto
     public void setName(String name) {
-        this.name = name; // Asigna un nuevo nombre al producto
+        this.name = name; 
     }
 
-    // Método para obtener el stock del producto
     public int getLot() {
-        return lot; // Devuelve el stock del producto
+        return lot;
     }
 
-    // Método para establecer el stock del producto
     public void setLot(int lot) {
         try {
-            this.lot = Integer.parseInt(String.valueOf(lot)); // Convierte y asigna el stock como un entero
+            this.lot = Integer.parseInt(String.valueOf(lot)); // Convierte y asigna el lot como un entero
         } catch (NumberFormatException e) {
-            System.err.println("Error: Stock must be a valid integer. Could not establish stock for the product: " + lot); // Captura el error si el stock no es un número válido
+            System.err.println("Error: Lot must be a valid integer. Could not establish lot for the product: " + lot); // Captura el error si el lot no es un número válido
         }
     }
-    
-    // Método para obtener el precio del producto
+  
     public double getPrice() {
-        return price; // Devuelve el precio del producto
+        return price;
     }
 
-    // Método para establecer el precio del producto
     public void setPrice(double price) {
-        this.price = price; // Asigna un nuevo precio al producto
+        this.price = price; 
     }
 }

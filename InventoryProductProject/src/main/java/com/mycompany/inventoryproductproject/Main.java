@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.TableRowSorter;
 
@@ -19,7 +20,7 @@ import javax.swing.table.TableRowSorter;
  *
  * @author ray_g
  */
-public class InventoryItemsMain extends javax.swing.JFrame {
+public class Main extends javax.swing.JFrame {
     
      List<Item> item = new ArrayList<>();
     TableRowSorter<TableFunctionalities> tableRowSorter = new TableRowSorter<>(); 
@@ -27,7 +28,7 @@ public class InventoryItemsMain extends javax.swing.JFrame {
     /**
      * Creates new form InventoryProductsMain
      */
-    public InventoryItemsMain() {
+    public Main() {
         initComponents();
         readFile();
         initObjects();
@@ -50,7 +51,7 @@ public class InventoryItemsMain extends javax.swing.JFrame {
         fldLot = new javax.swing.JTextField();
         lblLot = new javax.swing.JLabel();
         btnAdd = new javax.swing.JButton();
-        btnButton = new javax.swing.JButton();
+        btnRemove = new javax.swing.JButton();
         lblSearch = new javax.swing.JLabel();
         fldSearch = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
@@ -107,16 +108,16 @@ public class InventoryItemsMain extends javax.swing.JFrame {
         panela.add(btnAdd);
         btnAdd.setBounds(110, 120, 72, 24);
 
-        btnButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        btnButton.setForeground(new java.awt.Color(0, 0, 0));
-        btnButton.setText("Remove");
-        btnButton.addActionListener(new java.awt.event.ActionListener() {
+        btnRemove.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        btnRemove.setForeground(new java.awt.Color(0, 0, 0));
+        btnRemove.setText("Remove");
+        btnRemove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnButtonActionPerformed(evt);
+                btnRemoveActionPerformed(evt);
             }
         });
-        panela.add(btnButton);
-        btnButton.setBounds(210, 120, 82, 24);
+        panela.add(btnRemove);
+        btnRemove.setBounds(210, 120, 82, 24);
 
         lblSearch.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblSearch.setForeground(new java.awt.Color(0, 0, 0));
@@ -212,11 +213,28 @@ public class InventoryItemsMain extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnSearchActionPerformed
 
-    private void btnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnButtonActionPerformed
+    private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
         // TODO add your handling code here:
-        TableFunctionalities productInvTable = (TableFunctionalities) this.tblItem.getModel(); // Obtener el modelo de la tabla de productos
-        productInvTable.removeItem(); // Llamar al método removeInvProduct en el modelo para eliminar el último producto de la lista
-    }//GEN-LAST:event_btnButtonActionPerformed
+        int selectedRow = tblItem.getSelectedRow();
+
+        // Verificar si hay una fila seleccionada
+        if (selectedRow != -1) {
+            // Obtener el modelo de la tabla
+            TableFunctionalities productInvTable = (TableFunctionalities) tblItem.getModel();
+
+            // Obtener el índice de la fila seleccionada en el modelo
+            int modelRowIndex = tblItem.convertRowIndexToModel(selectedRow);
+
+            // Eliminar la fila del modelo
+            productInvTable.removeItem(modelRowIndex);
+
+            // Guardar los productos actualizados
+            saveProductsInv();
+        } else {
+            // Si no se ha seleccionado ninguna fila, mostrar un mensaje de advertencia
+            JOptionPane.showMessageDialog(this, "Please select a row to remove.", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnRemoveActionPerformed
 
     /**
      * @param args the command line arguments
@@ -235,21 +253,23 @@ public class InventoryItemsMain extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(InventoryItemsMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(InventoryItemsMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(InventoryItemsMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(InventoryItemsMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new InventoryItemsMain().setVisible(true);
+                new Main().setVisible(true);
             }
         });
     }
@@ -287,7 +307,7 @@ public class InventoryItemsMain extends javax.swing.JFrame {
     private void readFile() {
         try {
             Gson gson = new GsonBuilder().create();  // Crear un objeto Gson para convertir el JSON a la lista de productos
-            FileReader fileReader = new FileReader("ItemsInventory.json");  // Usar FileReader para leer el archivo "ProductsInventory.json"
+            FileReader fileReader = new FileReader("ProductsInventory.json");  // Usar FileReader para leer el archivo "ProductsInventory.json"
 
             java.lang.reflect.Type typeListItems = new TypeToken<List<Item>>() {
             }.getType();  // Definir el tipo de datos para la lista de productos
@@ -300,7 +320,7 @@ public class InventoryItemsMain extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
-    private javax.swing.JButton btnButton;
+    private javax.swing.JButton btnRemove;
     private javax.swing.JButton btnSearch;
     private javax.swing.JTextField fldItem;
     private javax.swing.JTextField fldLot;

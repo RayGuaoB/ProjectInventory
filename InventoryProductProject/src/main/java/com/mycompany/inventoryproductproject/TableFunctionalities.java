@@ -12,24 +12,30 @@ import javax.swing.table.AbstractTableModel;
  * @author ray_g
  */
 public class TableFunctionalities extends AbstractTableModel {
-    List<Item> item; // Lista que almacena los productos
+    List<Item> item; 
     String[] columnNames = { "Item name", "Price", "Lot" }; // Nombres de las columnas de la tabla
 
     // Constructor que toma una lista de productos como parámetro
     public TableFunctionalities(List<Item> item) {
-        this.item = item; // Inicializa la lista de productos
+        this.item = item; 
     }
 
     // Método para agregar un producto a la lista y actualizar la tabla
     public void addItem(Item item) {
-        this.item.add(item); // Agrega el producto a la lista
-        this.fireTableDataChanged(); // Notifica a la tabla que los datos han cambiado
+        this.item.add(item); 
+        this.fireTableDataChanged(); 
     }
 
     // Método para eliminar el último producto de la lista y actualizar la tabla
-    public void removeItem() {
-        this.item.remove(this.item.size() - 1); // Elimina el último producto de la lista
-        this.fireTableDataChanged(); // Notifica a la tabla que los datos han cambiado
+    public void removeItem(int rowIndex) {
+    // Verificar si el índice de fila está dentro de los límites
+    if (rowIndex >= 0 && rowIndex < item.size()) {
+        // Eliminar el elemento en el índice dado
+        item.remove(rowIndex);
+        // Notificar a la tabla que los datos han cambiado
+        fireTableRowsDeleted(rowIndex, rowIndex);
+    } else {
+        System.err.println("Error: Invalid row index");
     }
 
     // Devolver el número de filas en la tabla
@@ -47,7 +53,7 @@ public class TableFunctionalities extends AbstractTableModel {
     // Indicar si una celda es editable en la tabla (en este caso, no lo son)
     @Override
     public boolean isCellEditable(int row, int column) {
-        return false; // Devuelve false, indicando que las celdas no son editables
+        return false; 
     }
 
     // Devolver el nombre de una columna específica
