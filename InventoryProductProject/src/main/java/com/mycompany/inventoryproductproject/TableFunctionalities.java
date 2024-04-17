@@ -12,30 +12,30 @@ import javax.swing.table.AbstractTableModel;
  * @author ray_g
  */
 public class TableFunctionalities extends AbstractTableModel {
-    List<Products> product; // Lista que almacena los productos
-    String[] columnNames = { "Product name", "Price", "Stock" }; // Nombres de las columnas de la tabla
+    List<Item> item; // Lista que almacena los productos
+    String[] columnNames = { "Item name", "Price", "Lot" }; // Nombres de las columnas de la tabla
 
     // Constructor que toma una lista de productos como parámetro
-    public TableFunctionalities(List<Products> product) {
-        this.product = product; // Inicializa la lista de productos
+    public TableFunctionalities(List<Item> item) {
+        this.item = item; // Inicializa la lista de productos
     }
 
     // Método para agregar un producto a la lista y actualizar la tabla
-    public void appendProduct(Products product) {
-        this.product.add(product); // Agrega el producto a la lista
+    public void addItem(Item item) {
+        this.item.add(item); // Agrega el producto a la lista
         this.fireTableDataChanged(); // Notifica a la tabla que los datos han cambiado
     }
 
     // Método para eliminar el último producto de la lista y actualizar la tabla
-    public void removeInvProduct() {
-        this.product.remove(this.product.size() - 1); // Elimina el último producto de la lista
+    public void removeItem() {
+        this.item.remove(this.item.size() - 1); // Elimina el último producto de la lista
         this.fireTableDataChanged(); // Notifica a la tabla que los datos han cambiado
     }
 
     // Devolver el número de filas en la tabla
     @Override
     public int getRowCount() {
-        return this.product.size(); // Devuelve el tamaño de la lista de productos
+        return this.item.size(); // Devuelve el tamaño de la lista de productos
     }
 
     // Devolver el número de columnas en la tabla
@@ -59,11 +59,11 @@ public class TableFunctionalities extends AbstractTableModel {
     // Devolver el valor de una celda específica
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        var product = this.product.get(rowIndex); // Obtiene el producto en la posición rowIndex
+        var product = this.item.get(rowIndex); // Obtiene el producto en la posición rowIndex
         return switch (columnIndex) {
             case 0 -> product.getName(); // Devuelve el nombre del producto para la primera columna
             case 1 -> product.getPrice(); // Devuelve el precio del producto para la segunda columna
-            case 2 -> product.getStock(); // Devuelve el stock del producto para la tercera columna
+            case 2 -> product.getLot(); // Devuelve el stock del producto para la tercera columna
             default -> product; // Devuelve el producto en caso de un índice de columna inválido
         };
     }
