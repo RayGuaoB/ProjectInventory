@@ -71,6 +71,6 @@ public class TableFunctionalities extends AbstractTableModel {
             case 1 -> product.getPrice(); // Devuelve el precio del producto para la segunda columna
             case 2 -> product.getLot(); // Devuelve el stock del producto para la tercera columna
             default -> product; // Devuelve el producto en caso de un índice de columna inválido
-        };
+        }
     }
 }
